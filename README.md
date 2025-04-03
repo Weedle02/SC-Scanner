@@ -44,26 +44,26 @@ sudo apt-get install -y trufflehog gitleaks
 brew install trufflehog gitleaks
 ```
 
-## Create input file with repository URLs:
+##Create input file with repository URLs:
 
 ```bash
 echo "https://github.com/example/repo
 https://github.com/another/repo" > repos.txt
 ```
 
-Run scanner:
+## Run scanner:
 
 ```bash
 python scscanner.py repos.txt
 ```
 
-Sample output when clean:
+## Sample output when clean:
 
 ```bash
 No findings across all repositories
 ```
 
-Sample output with findings:
+## Sample output with findings:
 
 ```bash
 https://github.com/example/insecure-repo
