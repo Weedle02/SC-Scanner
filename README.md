@@ -76,3 +76,8 @@ GITLEAKS Findings:
 Leak: github-pat
 File: scripts/deploy.sh:42
 ```
+
+## Acknowledgments
+
+- **TruffleHog by Truffle Security
+- **Gitleaks by Zricethezav
