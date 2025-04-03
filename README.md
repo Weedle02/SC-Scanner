@@ -20,38 +20,38 @@ A parallel-processing security scanner that checks GitHub repositories for sensi
 
 ## Installation
 
-1. Clone repository:
+Clone repository:
 ```bash
 git clone https://github.com/weedle02/security-scanner.git
 cd security-scanner
 ```
 
-2. Install Python dependencies:
+Install Python dependencies:
 
 ```bash
 pip install gitpython colorama
 ```
 
-3. Install security tools:
+Install security tools:
 
-# For Debian/Ubuntu
+For Debian/Ubuntu
 ```bash
 sudo apt-get install -y trufflehog gitleaks
 ```
 
-# For macOS
+For macOS
 ```bash
 brew install trufflehog gitleaks
 ```
 
-##Create input file with repository URLs:
+Create input file with repository URLs:
 
 ```bash
 echo "https://github.com/example/repo
 https://github.com/another/repo" > repos.txt
 ```
 
-## Run scanner:
+Run scanner:
 
 ```bash
 python scscanner.py repos.txt
