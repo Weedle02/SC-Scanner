@@ -77,6 +77,10 @@ Leak: github-pat
 File: scripts/deploy.sh:42
 ```
 
+## Example Output:
+![image](https://github.com/user-attachments/assets/4391ff43-53e1-4fc2-a66f-ed27f838306b)
+
+
 ## Acknowledgments
 
 - **TruffleHog**: by Truffle Security
