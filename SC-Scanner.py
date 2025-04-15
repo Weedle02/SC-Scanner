@@ -87,21 +87,28 @@ def run_tool(tool_name, command, repo_dir, repo_url):
         print(Fore.YELLOW + f"{tool_name} timed out")
         return "timeout"
 
-    if not result.stdout.strip():
-        return None
-
-    try:
-        output = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        print(Fore.YELLOW + f"{tool_name} error: {result.stderr[:200]}...")
-        return None
+    output = []
+    if result.stdout.strip():
+        try:
+            # Handle line-delimited JSON for trufflehog
+            for line in result.stdout.strip().split('\n'):
+                if line.strip():
+                    parsed_line = json.loads(line)
+                    output.append(parsed_line)
+        except json.JSONDecodeError as e:
+            print(Fore.YELLOW + f"{tool_name} JSON error: {e} (line: {line[:200]})")
+            return None
 
     output_key = TOOLS[tool_name]["output_key"]
     if output_key:
-        keys = output_key.split('.')
+        # Handle nested keys for tools like gitleaks
         try:
+            # Assuming output is a single dict (gitleaks case)
+            data = output[0] if output else {}
+            keys = output_key.split('.')
             for key in keys:
-                output = output.get(key, {})
+                data = data.get(key, {})
+            return data if data else None
         except AttributeError:
             return []
     return output if output else None
@@ -137,8 +144,10 @@ def format_report(global_report):
                 
                 if tool == "trufflehog":
                     for secret in findings:
-                        repo_output.append(Fore.RED + f"Secret: {secret.get('RedactedURL', 'N/A')}")
-                        repo_output.append(Fore.WHITE + f"Path: {secret.get('Path', 'N/A')}")
+                        repo_output.append(Fore.RED + f"Secret: {secret.get('DetectorName', 'N/A')}")
+                        metadata = secret.get('SourceMetadata', {}).get('Data', {}).get('Git', {})
+                        repo_output.append(Fore.WHITE + f"File: {metadata.get('file', 'N/A')}")
+                        repo_output.append(Fore.WHITE + f"Commit: {metadata.get('commit', 'N/A')}")
                         
                 elif tool == "gitleaks":
                     for leak in findings:
